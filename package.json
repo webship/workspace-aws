@@ -1,0 +1,83 @@
+{
+  "name": "@webship/workspace-aws",
+  "version": "1.0.0",
+  "description": "AWS Elastic Beanstalk for Webship Workspace: the AWS menu on every site row, the application's environments and their URLs, deploy a version, tail the logs, recent events, public files from S3. A provider of @webship/workspace-hosting.",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "private": true,
+  "license": "ISC",
+  "repository": "github:webship/workspace-aws",
+  "files": [
+    "dist/src",
+    "commands",
+    "config",
+    "features",
+    "scripts",
+    "README.md",
+    "ddev",
+    "host-mounts.txt"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "workspacePlugin": {
+    "name": "aws",
+    "label": "AWS",
+    "settingsFile": "plugin.aws.settings.yml",
+    "settingsTemplate": "config/plugin.aws.settings.yml",
+    "labels": "config/settings.labels.yml",
+    "legacySettingsKey": "aws",
+    "typeActions": {
+      "aws": [
+        "sites"
+      ]
+    },
+    "commands": {
+      "types": [
+        "sites"
+      ],
+      "workspaces": [
+        "dev",
+        "test",
+        "demos",
+        "sandboxes",
+        "projects"
+      ],
+      "files": [
+        "commands/cmd-tools-aws.sh"
+      ]
+    },
+    "scripts": {
+      "functions": [
+        "scripts/functions/fun-aws.sh",
+        "scripts/functions/fun-aws-tool.sh"
+      ],
+      "args": [
+        "scripts/args/arg-aws.sh"
+      ],
+      "hostInstall": "scripts/host-install.sh"
+    },
+    "features": [
+      "features/aws.feature"
+    ],
+    "ddev": {
+      "compose": [
+        "ddev/docker-compose.aws-cli.yaml"
+      ],
+      "hostMounts": [
+        "~/.aws"
+      ]
+    }
+  },
+  "dependencies": {
+    "@webship/workspace-hosting": "github:webship/workspace-hosting#1.0.x"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@webship/workspace-plugin-api": "github:webship/workspace-plugin-api#1.0.x",
+    "typescript": "^5.9.0"
+  }
+}

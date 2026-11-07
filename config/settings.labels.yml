@@ -1,0 +1,13 @@
+# Labels for core/config/plugin.aws.settings.yml, merged into the Settings page.
+profile:
+  label: AWS profile
+  info: 'The named profile in ~/.aws (mounted from the host) the dashboard and the tool use. Ignored when an access key is set below.'
+region:
+  label: AWS region
+  info: 'The region the applications live in, unless the project''s link says otherwise.'
+access_key_id:
+  label: Access key id
+  info: 'An IAM access key for the dashboard (optional when the host profile is mounted). Read by the CLI as AWS_ACCESS_KEY_ID.'
+secret_access_key:
+  label: Secret access key
+  info: 'The secret of that key. Read by the CLI as AWS_SECRET_ACCESS_KEY.'

@@ -1,0 +1,11 @@
+# AWS — core/config/plugin.aws.settings.yml
+#
+# The aws CLI inside the dashboard container. Either the host's ~/.aws profile (mounted) or an access key for the dashboard; injected only into AWS jobs, never printed.
+# The named profile in ~/.aws (mounted from the host) the dashboard and the tool use. Ignored when an access key is set below.
+profile: default
+# The region the applications live in, unless the project's link says otherwise.
+region: eu-west-1
+# An IAM access key for the dashboard (optional when the host profile is mounted). Read by the CLI as AWS_ACCESS_KEY_ID.
+access_key_id: CHANGE_ME
+# The secret of that key. Read by the CLI as AWS_SECRET_ACCESS_KEY.
+secret_access_key: CHANGE_ME
