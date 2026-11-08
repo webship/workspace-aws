@@ -1,9 +1,9 @@
-# @webship/workspace-aws
+# @webship.co/workspace-aws
 
 AWS for the [Webship Workspace](https://github.com/webship/workspace) dashboard: the **AWS**
 menu on every site row, a live-site chip on the project card, "Link to AWS" when a new folder is
 made, and the `cmd-tools-aws.sh` command in every site workspace. A provider of
-[`@webship/workspace-hosting`](https://github.com/webship/workspace-hosting), which draws the menu,
+[`@webship.co/workspace-hosting`](https://github.com/webship/workspace-hosting), which draws the menu,
 the environments modal, the get-database-and-files flow and the New-folder section for every host.
 
 Elastic Beanstalk is the AWS product that has environments the way the family understands them: an application with named environments, each with a URL, a status and a health. A deploy zips the code, uploads it to the Beanstalk bucket, creates an application version and updates the environment. The database (RDS) is not reachable generically from a laptop, so there is no `--pull-db`; the public files come from an S3 bucket named once with `--files-bucket`.
