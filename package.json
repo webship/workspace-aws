@@ -1,6 +1,6 @@
 {
   "name": "@webship.co/workspace-aws",
-  "version": "1.0.0-beta1",
+  "version": "1.0.0-rc1",
   "description": "AWS Elastic Beanstalk for Webship Workspace: the AWS menu on every site row, the application's environments and their URLs, deploy a version, tail the logs, recent events, public files from S3. A provider of @webship.co/workspace-hosting.",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -75,11 +75,11 @@
     }
   },
   "dependencies": {
-    "@webship.co/workspace-hosting": "^1.0.0-beta1"
+    "@webship.co/workspace-hosting": "^1.0.0-rc1"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
-    "@webship.co/workspace-plugin-api": "^1.0.0-beta1",
+    "@webship.co/workspace-plugin-api": "^1.0.0-rc1",
     "typescript": "^5.9.0"
   },
   "publishConfig": {
