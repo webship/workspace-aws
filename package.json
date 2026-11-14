@@ -28,6 +28,23 @@
   "workspacePlugin": {
     "name": "aws",
     "label": "AWS",
+    "needs": {
+      "plugins": [
+        [
+          "dev",
+          "test",
+          "demos",
+          "sandboxes",
+          "projects"
+        ]
+      ],
+      "commands": [
+        {
+          "command": "aws",
+          "hint": "https://docs.aws.amazon.com/cli/"
+        }
+      ]
+    },
     "settingsFile": "plugin.aws.settings.yml",
     "settingsTemplate": "config/plugin.aws.settings.yml",
     "labels": "config/settings.labels.yml",
