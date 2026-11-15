@@ -18,6 +18,12 @@ import { awsProvider } from './lib/provider';
 export { awsProvider };
 export { awsLinkOf } from './lib/link';
 
+/** The AI items the installer places: agents in ai-agents/, skills in ai-skills/, commands in ai-commands/, prompts in ai-prompts/. */
+export const AGENTS: string[] = ['aws-deployer'];
+export const SKILLS: string[] = ['aws-hosting'];
+export const AI_COMMANDS: string[] = ['aws-status'];
+export const PROMPTS: string[] = ['aws-test-then-deploy'];
+
 export function register(api: PluginApi): void {
   registerHosting(api, awsProvider(api));
 }
