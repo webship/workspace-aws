@@ -41,7 +41,7 @@ function aws_list_environments() {
 function aws_do_environments() {
   aws elasticbeanstalk describe-environments --application-name "$2" --no-include-deleted --region "$(aws_region "$1")" --output json 2>/dev/null | python3 -c 'import json,sys
 for e in json.load(sys.stdin).get("Environments",[]):
-    print("  %-28s %-10s %-8s %-18s %s" % (e.get("EnvironmentName",""), e.get("Status",""), e.get("Health",""), (e.get("VersionLabel") or "")[:18], ("http://"+e["CNAME"]) if e.get("CNAME") else ""))' \
+    print("  %-28s %-10s %-8s %-18s %s" % (e.get("EnvironmentName",""), e.get("Status",""), e.get("Health",""), (e.get("VersionLabel") or "")[:18], ("http://"+e["CNAME"]) if e.get("CNAME") else ""))' 2>/dev/null \
     || { echo "  (could not list the environments — check aws sts get-caller-identity)"; return 1; } ;
 }
 
@@ -95,12 +95,12 @@ function aws_do_logs() {
 function aws_do_activities() {
   aws elasticbeanstalk describe-events --application-name "$2" --max-items 10 --region "$(aws_region "$1")" --output json 2>/dev/null | python3 -c 'import json,sys
 for e in json.load(sys.stdin).get("Events",[])[:10]:
-    print("  %-20s %-6s %-24s %s" % ((e.get("EventDate") or "")[:19], e.get("Severity",""), (e.get("EnvironmentName") or "")[:24], e.get("Message","")))' \
+    print("  %-20s %-6s %-24s %s" % ((e.get("EventDate") or "")[:19], e.get("Severity",""), (e.get("EnvironmentName") or "")[:24], e.get("Message","")))' 2>/dev/null \
     || echo "  (could not list the events)" ;
 }
 
 function aws_status() {
-  local project_path="$1" app="$2";
+  local project_path="$1" app="$2" missing rc=0;
   if [ -z "${app}" ] ; then
     echo "    (find applications with: aws elasticbeanstalk describe-applications)";
     return 0 ;
@@ -108,8 +108,16 @@ function aws_status() {
   echo "    region:  $(aws_region "${project_path}")";
   echo "    files:   $(aws_link_get "${project_path}" files_bucket)";
   echo "";
-  aws_do_environments "${project_path}" "${app}" ;
+  # Without the aws CLI or its credentials nothing below can answer: say once what is missing, in
+  # ensure_aws's words, and fail. The link, the region and the console still show.
+  if missing="$(ensure_aws)" ; then
+    aws_do_environments "${project_path}" "${app}" || rc=1 ;
+  else
+    [ -n "${missing}" ] && sed 's/^/  /' <<< "${missing}" ;
+    rc=1 ;
+  fi
   echo "";
   echo "  Console: https://$(aws_region "${project_path}").console.aws.amazon.com/elasticbeanstalk/home#/application/overview?applicationName=${app}";
   echo "  --push deploys a version; --pull-files syncs the S3 files bucket; RDS is not pulled from here.";
+  return ${rc} ;
 }
