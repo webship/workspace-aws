@@ -11,7 +11,7 @@
 #   aws_do_push <project_path> <id> <env>   deploy
 #   aws_do_logs <project_path> <id> <env>
 #   aws_do_activities <project_path> <id>
-#   aws_status <project_path> <id>          the closing status block
+#   aws_status <project_path> <id>          the closing status block; fails when the provider cannot be reached
 
 AWS_LINK_FILE=".aws/workspace.yml";
 
@@ -152,7 +152,9 @@ function aws_project_tool() {
     aws_do_activities "${project_path}" "${linked_id}" || true ;
   fi
 
-  # Default (and after any verb): status.
+  # Default (and after any verb): status. The local part always shows; when the provider cannot be
+  # reached (no CLI, no login, no token), aws_status says what is missing and the run fails.
+  local status_rc=0;
   echo "";
   echo "*---------------------------------------------------------------------*";
   echo "  ${doc_name}/${PROJECT_NAME} on AWS";
@@ -165,9 +167,10 @@ function aws_project_tool() {
     local selected;
     selected="$(aws_selected_env "${project_path}")";
     echo "    env:     ${selected:-none selected — --environments then --select <name>}";
-    aws_status "${project_path}" "${linked_id}" ;
+    aws_status "${project_path}" "${linked_id}" || status_rc=1 ;
   fi
   echo "*---------------------------------------------------------------------*";
 
   cd "${WORKSPACE_ROOT}/${doc_name}";
+  return ${status_rc} ;
 }
